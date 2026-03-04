@@ -143,7 +143,6 @@ AWS IAM の権限設定: > 使用するIAMユーザーには AmazonS3FullAccess 
 #### AWS 側の事前設定チェック
 
 S3バケットを作成する際、以下の設定を済ませておいてください。
-
 静的ウェブサイトホスティングを有効にする。
 
 パブリックアクセスブロックを解除（CloudFrontを使わない場合）するか、OAC (Origin Access Control) を設定して CloudFront からのみ許可する（推奨）。
