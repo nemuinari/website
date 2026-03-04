@@ -1,5 +1,10 @@
 # Create homepage (Rust)
 
+実装環境:
+
+- Rust/WebAssembly/Yew.
+- AWS/CloudFront/S3/IAM/ACM.
+
 ## step.1
 
 #### Wasmターゲットを追加
