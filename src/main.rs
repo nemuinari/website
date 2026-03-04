@@ -6,7 +6,6 @@ fn app() -> Html {
     let is_menu_open = use_state(|| false);
     // ヘッダー画像の読み込み状態を管理するステート
     let is_loaded = use_state(|| false);
-
     // コンポーネントが表示されたら実行される
     {
         let is_loaded = is_loaded.clone();
