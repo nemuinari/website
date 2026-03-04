@@ -4,8 +4,8 @@ use yew::prelude::*;
 fn app() -> Html {
     html! {
         <div>
-            <h1>{ "Hello, Rust Wasm!" }</h1>
-            <p>{ "This is my page." }</p>
+            <h1>{ "Rust Wasm サイト、起動成功！" }</h1>
+            <p>{ "GitHub Actions で自動デプロイされました。" }</p>
         </div>
     }
 }
