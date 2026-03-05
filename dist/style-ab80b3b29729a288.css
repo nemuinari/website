@@ -1,11 +1,11 @@
 @charset "UTF-8";
 
 :root {
-  --header-height: 64px; /* 固定ヘッダーの高さ */
+  --header-height: 64px;
 }
 
 * {
-  box-sizing: border-box; /* ボックスサイズの基準を border-box に設定 */
+  box-sizing: border-box;
 }
 
 body {
@@ -15,22 +15,21 @@ body {
   padding-top: var(--header-height);
 }
 
-/* 固定ヘッダー */
+/* --- Navigation --- */
 .header-content {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  z-index: 1000;
   height: var(--header-height);
   display: flex;
   align-items: center;
   padding: 0 1rem;
   background: #fff;
   border-bottom: 1px solid #ddd;
-  z-index: 1000;
 }
 
-/* ロゴ */
 .nav-logo {
   font-weight: 700;
   font-size: 1.4rem;
@@ -42,28 +41,20 @@ nav {
   align-items: center;
 }
 
-/* ハンバーガー（PCでは非表示） */
 .nav-toggle {
   display: none;
+  padding: 0 0.5rem;
   background: transparent;
   border: none;
   font-size: 1.6rem;
   cursor: pointer;
-  color: #000;
-  padding: 0 0.5rem;
 }
 
-/* ナビ（横並び） */
 .nav-menu {
   display: flex;
   margin: 0;
   padding: 0;
   list-style: none;
-  align-items: center;
-}
-
-.nav-menu li {
-  margin: 0;
 }
 
 .nav-menu a {
@@ -77,62 +68,83 @@ nav {
   transition: background-color 0.15s ease;
 }
 
-.nav-menu a:hover,
-.nav-menu a:focus {
+.nav-menu a:hover {
   background: #f2f2f2;
 }
 
-/* ヘッダー画像はヘッダーバーと隙間なく接する（余白はなし） */
-.header-image {
-  width: 100%;
-  text-align: right;
-  overflow: hidden;
+/* --- Header Visual --- */
+.header-visual-container {
   position: relative;
-}
-
-.header-image img {
   width: 100%;
-  height: auto;
-  display: block;
+  max-width: 1500px;
+  aspect-ratio: 3 / 1;
+  margin: 0 auto;
+  overflow: hidden;
+  background-color: #fff;
 }
-.header-image::before,
-.header-image::after {
-  background: #fff;
-  content: "";
-  pointer-events: none;
+
+.layer {
   position: absolute;
+  display: block;
+  opacity: 0;
+}
+
+.main-bg {
   z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.header-image.loaded::before {
-  animation: header-image-before 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  inset: 0 0 50%;
+.title-logo {
+  z-index: 2;
+  top: 20%;
+  left: 4.5%;
+  width: 45%;
+  height: auto;
 }
 
-.header-image.loaded::after {
-  animation: header-image-after 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  inset: 50% 0 0;
+.subtitle-logo {
+  z-index: 3;
+  top: 60%;
+  left: 4.5%;
+  width: 45%;
+  height: auto;
 }
 
-@keyframes header-image-before {
-  100% {
-    transform: translateX(100%);
+/* --- Animation --- */
+.animate .layer {
+  animation: slideInFade 1.5s cubic-bezier(0.25, 0.45, 0.45, 0.95) forwards;
+}
+
+.animate .main-bg {
+  animation-delay: 0.2s;
+}
+.animate .title-logo {
+  animation-delay: 0.8s;
+}
+.animate .subtitle-logo {
+  animation-delay: 1.4s;
+}
+
+@keyframes slideInFade {
+  from {
+    opacity: 0;
+    transform: translateX(-3vw);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
-@keyframes header-image-after {
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-/* レスポンシブ対応
------------------------------- */
-
+/* --- Responsive --- */
 @media (max-width: 768px) {
   .nav-toggle {
     display: block;
-    margin-left: auto; /* 右寄せ */
+    margin-left: auto;
   }
 
   nav {
@@ -145,10 +157,10 @@ nav {
     top: var(--header-height);
     left: 0;
     right: 0;
+    z-index: 1001;
     flex-direction: column;
     background: #fff;
     border-top: 1px solid #ddd;
-    z-index: 1001;
   }
 
   .nav-menu.active {
@@ -156,18 +168,30 @@ nav {
   }
 
   .nav-menu a {
-    display: block;
-    height: auto;
     padding: 0.9rem 1rem;
     text-align: center;
     border-bottom: 1px solid #eee;
   }
+
+  .header-visual-container {
+    aspect-ratio: 3 / 1;
+  }
+
+  .title-logo {
+    width: 45%;
+    top: 20%;
+  }
+
+  .subtitle-logo {
+    width: 45%;
+    top: 65%;
+  }
 }
 
-/* フッター */
+/* --- Footer --- */
 .footer-content {
   text-align: center;
   padding: 1rem 0;
-  border-top: 1px solid #ddd;
   background: #fff;
+  border-top: 1px solid #ddd;
 }

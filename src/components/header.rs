@@ -23,11 +23,9 @@ pub fn header() -> Html {
     } else {
         "nav-menu"
     };
-    let header_image_class = if *is_loaded {
-        "header-image loaded"
-    } else {
-        "header-image"
-    };
+
+    // アニメーション発火用のクラス
+    let animation_class = if *is_loaded { "animate" } else { "" };
 
     html! {
         <header>
@@ -45,8 +43,17 @@ pub fn header() -> Html {
                     </ul>
                 </nav>
             </div>
-            <div class={header_image_class}>
-                <img src="assets/header_1.png" alt="header images" />
+
+            /* 画像コンテナ */
+            <div class={classes!("header-visual-container", animation_class)}>
+                /* 1. メイン画像 (最背面) */
+                <img src="assets/header_1.png" class="layer main-bg" alt="Main Background" />
+
+                /* 2. タイトルロゴ */
+                <img src="assets/header_2.png" class="layer title-logo" alt="Title Logo" />
+
+                /* 3. サブタイトルロゴ */
+                <img src="assets/header_3.png" class="layer subtitle-logo" alt="Subtitle Logo" />
             </div>
         </header>
     }
