@@ -3,7 +3,11 @@
 実装環境:
 
 - Rust/WebAssembly/Yew.
-- AWS/CloudFront/S3/IAM/ACM.
+- GitHub Pages.
+
+```t
+https://nemuinari.github.io/website/
+```
 
 ## step.1
 
@@ -87,69 +91,62 @@ $ touch .github/workflows/deploy.yml
 #### .github/workflows/deploy.yml
 
 ```yaml
-name: Deploy to AWS S3
+name: Deploy Yew App to GitHub Pages
 
 on:
   push:
     branches:
-      - main # mainブランチにpushされた時に発動
+      - main 
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Rust toolchain
+      # Rust ツールチェーンのセットアップ
+      - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
 
-      - name: Install Trunk
+      # Trunk のインストール
+      - name: Download and install Trunk
         run: |
           wget -qO- https://github.com/trunk-rs/trunk/releases/latest/download/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
           sudo mv trunk /usr/local/bin/
 
+      # ビルド実行（リポジトリ名 "website" に合わせたパス設定）
       - name: Build with Trunk
-        run: trunk build --release
+        run: trunk build --release --public-url "/website/"
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      # Yew-router を使っている場合の 404 対策（必要なければ削除可）
+      - name: Copy index.html to 404.html
+        run: cp dist/index.html dist/404.html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-1 # お使いのリージョン
+          path: './dist'
 
-      - name: Deploy to S3
-        run: |
-          aws s3 sync dist/ s3://${{ secrets.S3_BUCKET_NAME }} --delete
-
-      - name: CloudFront Invalidation (Optional)
-        run: |
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 
 ```
 
-## setp.5
-
-#### GitHub への Secret 登録
-
-GitHub リポジトリの Settings > Secrets and variables > Actions から、以下の4つを登録する必要があります。
-
-AWS_ACCESS_KEY_ID: AWSのアクセスキー
-AWS_SECRET_ACCESS_KEY: AWSのシークレットキー
-S3_BUCKET_NAME: 作成したS3バケットの名前
-CLOUDFRONT_DISTRIBUTION_ID: CloudFrontのディストリビューションID（まだなら後回しでもOK）
-
-[!IMPORTANT]
-AWS IAM の権限設定: > 使用するIAMユーザーには AmazonS3FullAccess と CloudFrontFullAccess（またはそれらに絞った権限）が必要です。
-
-#### AWS 側の事前設定チェック
-
-S3バケットを作成する際、以下の設定を済ませておいてください。
-静的ウェブサイトホスティングを有効にする。
-
-パブリックアクセスブロックを解除（CloudFrontを使わない場合）するか、OAC (Origin Access Control) を設定して CloudFront からのみ許可する（推奨）。
-
-インデックスドキュメントを index.html に設定する。

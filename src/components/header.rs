@@ -46,7 +46,7 @@ pub fn header() -> Html {
                 </nav>
             </div>
             <div class={header_image_class}>
-                <img src="/assets/header_1.png" alt="header images" />
+                <img src="assets/header_1.png" alt="header images" />
             </div>
         </header>
     }
