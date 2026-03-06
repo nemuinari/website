@@ -1,22 +1,19 @@
 mod components;
+mod style;
 
+use components::base::Base;
 use components::footer::Footer;
 use components::header::Header;
+use style::GlobalStyle;
 use yew::prelude::*;
 
 #[function_component(App)]
 fn app() -> Html {
     html! {
         <>
+            <GlobalStyle />
             <Header />
-
-            <main style="min-height: 50vh; padding: 2rem;">
-                <div class="content-body">
-                    <h2>{ "Currently under construction." }</h2>
-                    <p>{ "Nemuinari's homepage is built with a Rust WebAssembly site." }</p>
-                </div>
-            </main>
-
+            <Base />
             <Footer />
         </>
     }
@@ -25,4 +22,3 @@ fn app() -> Html {
 fn main() {
     yew::Renderer::<App>::new().render();
 }
-// this update is 03051709

@@ -2,7 +2,7 @@
 
 実装環境:
 
-- Rust/WebAssembly/Yew.
+- Rust/WebAssembly/Yew/Stylist.
 - GitHub Pages.
 
 ```t
@@ -96,7 +96,7 @@ name: Deploy Yew App to GitHub Pages
 on:
   push:
     branches:
-      - main 
+      - main
 
 permissions:
   contents: read
@@ -136,7 +136,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: "./dist"
 
   deploy:
     needs: build
@@ -147,6 +147,5 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4 
+        uses: actions/deploy-pages@v4
 ```
-
