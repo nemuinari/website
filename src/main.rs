@@ -1,9 +1,11 @@
-mod components;
+mod base;
+mod footer;
+mod header;
 mod style;
 
-use components::base::Base;
-use components::footer::Footer;
-use components::header::Header;
+use base::Base;
+use footer::Footer;
+use header::Header;
 use style::GlobalStyle;
 use yew::prelude::*;
 
