@@ -60,6 +60,22 @@ fn get_works_style() -> stylist::StyleSource {
         max-width: 1100px;
         margin: 0 auto;
 
+        .content-body {
+            width: 100%;
+            animation: fadeInLefty 1.5s ease-out forwards;
+        }
+
+        @keyframes fadeInLefty {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px); 
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);    
+            }
+        } 
+
         .section-title {
             color: ${title_color};
             font-size: 2rem;
@@ -67,6 +83,7 @@ fn get_works_style() -> stylist::StyleSource {
             text-align: left;
             font-weight: 300;
             letter-spacing: 0.1em;
+            animation: fadeInLefty 1.5s ease-out forwards;
         }
 
         .works-grid {
@@ -133,23 +150,46 @@ fn get_works_style() -> stylist::StyleSource {
         .button-container {
             display: flex;
             justify-content: center;
-            margin-top: 2rem;
+            margin-top: 3rem;  
+            padding: 0 1rem;   
         }
 
         .more-button {
-            padding: 0.6rem 2.5rem;
+            padding: 0.8rem 3rem; 
             background-color: transparent;
             border: 1px solid ${border};
             color: ${title_color};
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             letter-spacing: 0.1em;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            outline: none;
+            -webkit-tap-highlight-color: transparent; 
         }
 
-        .more-button:hover {
-            background-color: ${title_color};
-            color: #fff;
+        /* デスクトップ用 */
+        @media (min-width: 769px) {
+            .more-button:hover {
+                background-color: ${title_color};
+                color: #fff;
+            }
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .button-container {
+                margin-top: 2rem;
+            }
+            .more-button {
+                width: 100%;       
+                max-width: 300px;  
+                font-size: 0.9rem; 
+            }
+            
+            .more-button:active {
+                background-color: rgba(0, 0, 0, 0.05);
+                transform: scale(0.98);
+            }
         }
         "#,
         border = BORDER_COLOR,
