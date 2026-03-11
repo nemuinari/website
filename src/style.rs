@@ -33,6 +33,10 @@ pub fn global_style() -> Html {
         r#"
         * { box-sizing: border-box; }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: "Noto Sans JP", sans-serif;
             margin: 0;

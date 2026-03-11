@@ -23,7 +23,7 @@ const NAV_ITEMS: &[NavItem] = &[
     },
     NavItem {
         name: "Works",
-        href: "#",
+        href: "#works",
     },
     NavItem {
         name: "Contact",
