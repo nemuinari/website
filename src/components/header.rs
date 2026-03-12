@@ -1,11 +1,11 @@
-use crate::css::{HEADER_IMAGES, get_app_style};
+use crate::css::get_app_style;
 use yew::prelude::*;
 
+/* Nav menu */
 struct NavItem {
     name: &'static str,
     href: &'static str,
 }
-
 const NAV_ITEMS: &[NavItem] = &[
     NavItem {
         name: "Home",
@@ -29,6 +29,18 @@ const NAV_ITEMS: &[NavItem] = &[
     },
 ];
 
+/* Header images */
+struct HeaderItem {
+    base: &'static str,
+    title: &'static str,
+    subtitle: &'static str,
+}
+const HEADER_ITEMS: HeaderItem = HeaderItem {
+    base: "assets/header_1.png",
+    title: "assets/header_2.png",
+    subtitle: "assets/header_3.png",
+};
+
 #[function_component(Header)]
 pub fn header() -> Html {
     let is_menu_open = use_state(|| false);
@@ -48,13 +60,14 @@ pub fn header() -> Html {
     };
 
     let style = get_app_style();
+
     html! {
-        <header class={classes!(style, "header-main", is_loaded.then_some("animate"))}>
+        <header class={classes!(style, "header-main", (*is_loaded).then_some("animate"))}>
             <div class="header-content">
                 <div class="nav-logo">{ "N.N.Lab." }</div>
                 <button class="nav-toggle" onclick={onclick_toggle}>{ "☰" }</button>
                 <nav id="navMenu">
-                    <ul class={classes!("nav-menu", is_menu_open.then_some("active"))}>
+                    <ul class={classes!("nav-menu", (*is_menu_open).then_some("active"))}>
                         { for NAV_ITEMS.iter().map(|item| html! {
                             <li><a href={item.href}>{ item.name }</a></li>
                         }) }
@@ -63,9 +76,9 @@ pub fn header() -> Html {
             </div>
 
             <div class="header-visual-container">
-                <img src={HEADER_IMAGES.base} class="layer main-bg" alt="Main Background" />
-                <img src={HEADER_IMAGES.title} class="layer title-logo" alt="Title Logo" />
-                <img src={HEADER_IMAGES.subtitle} class="layer subtitle-logo" alt="Subtitle Logo" />
+                <img src={HEADER_ITEMS.base} class="layer main-bg" alt="Main Background" />
+                <img src={HEADER_ITEMS.title} class="layer title-logo" alt="Title Logo" />
+                <img src={HEADER_ITEMS.subtitle} class="layer subtitle-logo" alt="Subtitle Logo" />
             </div>
         </header>
     }

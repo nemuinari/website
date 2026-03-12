@@ -1,9 +1,9 @@
 mod components;
 mod css;
 
-use components::base::Base;
 use components::footer::Footer;
 use components::header::Header;
+use components::test::Test;
 use components::works::Works;
 use css::GlobalStyle;
 use yew::prelude::*;
@@ -15,7 +15,7 @@ fn app() -> Html {
             <GlobalStyle />
             <Header />
             <Works />
-            <Base />
+            <Test />
             <Footer />
         </>
     }

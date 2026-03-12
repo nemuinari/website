@@ -1,8 +1,8 @@
 use crate::css::get_app_style;
 use yew::prelude::*;
 
-#[function_component(Base)]
-pub fn base() -> Html {
+#[function_component(Test)]
+pub fn test() -> Html {
     let style = get_app_style();
     html! {
         <main class={classes!(style, "base-layout")}>

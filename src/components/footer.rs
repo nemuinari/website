@@ -1,5 +1,13 @@
-use crate::css::{FOOTER_CONFIG, get_app_style};
+use crate::css::get_app_style;
 use yew::prelude::*;
+
+/* Footer */
+struct FooterConfig {
+    pub copyright: &'static str,
+}
+const FOOTER_CONFIG: FooterConfig = FooterConfig {
+    copyright: "© Nemui Nari's WebSite 2026.",
+};
 
 #[function_component(Footer)]
 pub fn footer() -> Html {
