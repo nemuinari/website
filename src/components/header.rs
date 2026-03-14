@@ -1,11 +1,13 @@
-use crate::css::get_app_style;
+use wasm_bindgen::JsCast;
+use wasm_bindgen::prelude::Closure;
+use web_sys::{IntersectionObserver, IntersectionObserverEntry, IntersectionObserverInit};
 use yew::prelude::*;
 
-/* Nav menu */
 struct NavItem {
     name: &'static str,
     href: &'static str,
 }
+
 const NAV_ITEMS: &[NavItem] = &[
     NavItem {
         name: "Home",
@@ -17,7 +19,7 @@ const NAV_ITEMS: &[NavItem] = &[
     },
     NavItem {
         name: "Profile",
-        href: "#",
+        href: "#profile",
     },
     NavItem {
         name: "Works",
@@ -29,12 +31,12 @@ const NAV_ITEMS: &[NavItem] = &[
     },
 ];
 
-/* Header images */
 struct HeaderItem {
     base: &'static str,
     title: &'static str,
     subtitle: &'static str,
 }
+
 const HEADER_ITEMS: HeaderItem = HeaderItem {
     base: "assets/header_1.png",
     title: "assets/header_2.png",
@@ -44,13 +46,40 @@ const HEADER_ITEMS: HeaderItem = HeaderItem {
 #[function_component(Header)]
 pub fn header() -> Html {
     let is_menu_open = use_state(|| false);
-    let is_loaded = use_state(|| false);
+    let is_visible = use_state(|| false);
+    let hero_ref = use_node_ref();
 
+    // Intersection Observer for Hero Visual
     {
-        let is_loaded = is_loaded.clone();
-        use_effect_with((), move |_| {
-            is_loaded.set(true);
-            || ()
+        let is_visible = is_visible.clone();
+        let hero_ref = hero_ref.clone();
+        use_effect_with(hero_ref.clone(), move |hero_ref| {
+            let mut observer = None;
+            if let Some(element) = hero_ref.cast::<web_sys::Element>() {
+                let is_visible = is_visible.clone();
+                let closure = Closure::wrap(Box::new(move |entries: js_sys::Array| {
+                    for entry in entries.iter() {
+                        let entry = entry.unchecked_into::<IntersectionObserverEntry>();
+                        if entry.is_intersecting() {
+                            is_visible.set(true);
+                        }
+                    }
+                }) as Box<dyn FnMut(js_sys::Array)>);
+
+                let options = IntersectionObserverInit::new();
+                let obs = IntersectionObserver::new_with_options(
+                    closure.as_ref().unchecked_ref(),
+                    &options,
+                )
+                .unwrap();
+                obs.observe(&element);
+                observer = Some((obs, closure));
+            }
+            move || {
+                if let Some((obs, _)) = observer {
+                    obs.disconnect();
+                }
+            }
         });
     }
 
@@ -59,26 +88,24 @@ pub fn header() -> Html {
         Callback::from(move |_| is_menu_open.set(!*is_menu_open))
     };
 
-    let style = get_app_style();
-
     html! {
-        <header class={classes!(style, "header-main", (*is_loaded).then_some("animate"))}>
-            <div class="header-content">
+        <header class="header-main">
+            <div class="nav-bar">
                 <div class="nav-logo">{ "N.N.Lab." }</div>
-                <button class="nav-toggle" onclick={onclick_toggle}>{ "☰" }</button>
-                <nav id="navMenu">
-                    <ul class={classes!("nav-menu", (*is_menu_open).then_some("active"))}>
+                <nav class="nav-container">
+                    <button class="nav-toggle-btn" onclick={onclick_toggle}>{ "☰" }</button>
+                    <ul class={classes!("nav-menu-list", if *is_menu_open { "active" } else { "" })}>
                         { for NAV_ITEMS.iter().map(|item| html! {
-                            <li><a href={item.href}>{ item.name }</a></li>
+                            <li><a href={item.href} class="nav-link">{ item.name }</a></li>
                         }) }
                     </ul>
                 </nav>
             </div>
-
-            <div class="header-visual-container">
-                <img src={HEADER_ITEMS.base} class="layer main-bg" alt="Main Background" />
-                <img src={HEADER_ITEMS.title} class="layer title-logo" alt="Title Logo" />
-                <img src={HEADER_ITEMS.subtitle} class="layer subtitle-logo" alt="Subtitle Logo" />
+            <div ref={hero_ref} class={classes!("hero-visual-area", if *is_visible { "animate" } else { "" })}
+            >
+                <img src={HEADER_ITEMS.base} class="hero-layer hero-bg" alt="Main Background" />
+                <img src={HEADER_ITEMS.title} class="hero-layer hero-logo-title" alt="Title Logo" />
+                <img src={HEADER_ITEMS.subtitle} class="hero-layer hero-logo-subtitle" alt="Subtitle Logo" />
             </div>
         </header>
     }

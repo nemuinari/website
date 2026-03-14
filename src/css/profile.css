@@ -1,0 +1,178 @@
+/* --- Profile Layout --- */
+.prof-main {
+  padding: 2rem;
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+}
+
+.prof-main.animate {
+  visibility: visible;
+}
+
+.prof-title {
+  color: var(--primary-text);
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: left;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  opacity: 0;
+}
+
+/* 左右コンテナ */
+.prof-flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6rem;
+  margin-top: 0;
+}
+
+/* 左側：画像エリア */
+.prof-visual-container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1 / 1;
+  overflow: visible;
+}
+
+/* 共通設定 */
+.prof-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition:
+    transform 0.6s var(--ease-standard),
+    filter 0.3s ease;
+}
+
+/* 画像1: 背面 */
+.prof-bg {
+  z-index: 1;
+}
+
+/* 画像2: 前面 */
+.prof-img {
+  z-index: 2;
+}
+
+/* 右側：テキストエリア */
+.prof-text-container {
+  flex: 1;
+  color: var(--primary-text);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.prof-entry {
+  margin-bottom: 1.5rem;
+  opacity: 0;
+}
+
+.prof-label {
+  font-weight: bold;
+  display: block;
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.2rem;
+}
+
+.prof-value {
+  font-size: 1.2rem;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+}
+
+/* --- Animations --- */
+
+/* タイトル：左から */
+.animate .prof-title {
+  animation: fadeInLefty 1.2s var(--ease-slide) forwards;
+}
+
+/* 画像1（背面）：右から*/
+.animate .prof-bg {
+  animation: fadeInRighty 1.2s var(--ease-slide) 0.4s forwards;
+}
+
+/* 画像2（前面）：左から */
+.animate .prof_img,
+.animate .prof-img {
+  animation: fadeInLefty 1.2s var(--ease-slide) 0.8s forwards;
+}
+
+/* テキスト：左から k*/
+.animate .prof-entry {
+  animation: fadeInLefty 1s var(--ease-slide) forwards;
+  animation-delay: calc(0.6s + (var(--i) * 0.15s));
+}
+
+/* キーフレーム定義 */
+@keyframes fadeInLefty {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRighty {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* --- レスポンシブ対応 --- */
+@media (max-width: 1024px) {
+  .prof-flex-container {
+    gap: 3rem;
+  }
+}
+
+/* --- レスポンシブ対応 --- */
+@media (max-width: 768px) {
+  .prof-flex-container {
+    flex-direction: column;
+    gap: 3rem;
+    align-items: flex-start;
+  }
+
+  .prof-visual-container {
+    width: 100%;
+    min-width: 200px;
+    max-width: 350px;
+    margin: 0 auto;
+  }
+
+  .prof-text-container {
+    width: 100%;
+    text-align: left;
+    padding-left: 0.5rem;
+  }
+
+  .prof-entry {
+    margin-left: 0;
+    margin-right: 0;
+    text-align: left;
+    max-width: 100%;
+  }
+}

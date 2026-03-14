@@ -1133,10 +1133,13 @@ dependencies = [
 name = "website"
 version = "0.1.0"
 dependencies = [
+ "js-sys",
  "once_cell",
  "serde",
  "serde_json",
  "stylist",
+ "wasm-bindgen",
+ "web-sys",
  "yew",
 ]
 

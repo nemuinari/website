@@ -3,6 +3,7 @@ mod css;
 
 use components::footer::Footer;
 use components::header::Header;
+use components::profile::Profile;
 use components::test::Test;
 use components::works::Works;
 use css::GlobalStyle;
@@ -14,6 +15,7 @@ fn app() -> Html {
         <>
             <GlobalStyle />
             <Header />
+            <Profile />
             <Works />
             <Test />
             <Footer />
