@@ -143,6 +143,13 @@
 }
 
 @media (max-width: 768px) {
+  .works-layout {
+    min-height: auto;
+  }
+  .section-title-works {
+    margin-bottom: 1.5rem;
+  }
+
   .works-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
