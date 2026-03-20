@@ -24,14 +24,15 @@ class CienParser(HTMLParser):
         self.articles = []
         self._current = {}
         self._in_title = False
+        self._depth_card = 0
         self._in_card = False
         self._in_date = False
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
-        cls = attrs.get("class", "")
 
         # カード要素の検出
+        cls = attrs.get("class", "")
         if "c-postedArticle" in cls:
             self._in_card = True
             self._current = {}
@@ -39,14 +40,14 @@ class CienParser(HTMLParser):
         if not self._in_card:
             return
 
-        # サムネイル画像 — src か data-src に URL があれば無条件で採用
-        if tag == "img":
-            src = attrs.get("src", "") or attrs.get("data-src", "")
+        # サムネイル画像
+        if tag == "img" and "v-image" in cls:
+            src = attrs.get("src") or attrs.get("data-src", "")
             alt = attrs.get("alt", "")
-            if src and not self._current.get("thumbnail"):
+            if src and "article" in src or "cover" in src:
                 self._current["thumbnail"] = src
-            if alt and not self._current.get("title"):
-                self._current["title"] = alt
+                if not self._current.get("title"):
+                    self._current["title"] = alt
 
         # 記事リンク
         if tag == "a" and "c-cardLink" in cls:
@@ -64,6 +65,7 @@ class CienParser(HTMLParser):
 
     def handle_endtag(self, tag):
         if tag == "div" and self._in_card:
+            # 必須フィールドが揃っていれば保存
             if self._current.get("url") and self._current.get("title"):
                 self.articles.append(dict(self._current))
             self._in_card = False
@@ -74,7 +76,7 @@ class CienParser(HTMLParser):
         if not data:
             return
         if self._in_date:
-            self._current["date"] = data[:10]
+            self._current["date"] = data[:10].replace("/", "/")
             self._in_date = False
         if self._in_title:
             self._current["title"] = data
@@ -114,6 +116,7 @@ def main():
         articles = fetch_articles()
     except Exception as e:
         print(f"ERROR: {e}", file=sys.stderr)
+        # フォールバック: 空リストで続行（ビルドを止めない）
         articles = []
 
     print(f"  -> {len(articles)} articles found")
@@ -130,4 +133,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()   main()
+    main()
