@@ -210,6 +210,16 @@
     gap: 1.2rem;
   }
 
+  /* 通常表示(show_all=false)時は3件目を非表示にして2件表示 */
+  .blog-grid .blog-card:nth-child(3) {
+    display: none;
+  }
+
+  /* View More展開時は全件表示 */
+  .blog-grid.show-all .blog-card:nth-child(3) {
+    display: flex;
+  }
+
   .blog-card-title {
     font-size: 0.78rem;
   }

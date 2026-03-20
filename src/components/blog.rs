@@ -20,8 +20,6 @@ struct Article {
     url: String,
     #[serde(default)]
     date: String,
-    #[serde(default)]
-    thumbnail: String,
 }
 
 const INITIAL_DISPLAY: usize = 3;
@@ -132,9 +130,8 @@ pub fn blog() -> Html {
 
                         html! {
                             <>
-                                <div class="blog-grid">
+                                <div class={classes!("blog-grid", if *show_all { "show-all" } else { "" })}>
                                     { for visible.into_iter().enumerate().map(|(i, article)| {
-                                        let has_thumb = !article.thumbnail.is_empty();
                                         html! {
                                             <a
                                                 key={format!("{}-{}", article.url, key)}
@@ -145,15 +142,7 @@ pub fn blog() -> Html {
                                                 style={format!("--i: {};", i)}
                                             >
                                                 <div class="blog-thumbnail-container">
-                                                    if has_thumb {
-                                                        <img
-                                                            src={article.thumbnail.clone()}
-                                                            alt={article.title.clone()}
-                                                            class="blog-img"
-                                                        />
-                                                    } else {
-                                                        <div class="blog-placeholder"></div>
-                                                    }
+                                                    <div class="blog-placeholder"></div>
                                                 </div>
                                                 <div class="blog-card-body">
                                                     <p class="blog-card-title">{ &article.title }</p>
