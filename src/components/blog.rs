@@ -7,8 +7,6 @@ use wasm_bindgen_futures::spawn_local;
 use web_sys::{Element, IntersectionObserver, IntersectionObserverEntry, IntersectionObserverInit};
 use yew::prelude::*;
 
-// ビルド時に生成された静的 JSON のパス
-// trunk が --public-url でプレフィックスを付けるため、相対パスで指定
 const ARTICLES_JSON: &str = "assets/articles.json";
 
 #[derive(Deserialize, Clone, PartialEq)]
@@ -26,12 +24,13 @@ struct Article {
     thumbnail: String,
 }
 
-const INITIAL_DISPLAY: usize = 6;
+const INITIAL_DISPLAY: usize = 3;
 
 #[function_component(Blog)]
 pub fn blog() -> Html {
     let show_all = use_state(|| false);
     let is_visible = use_state(|| false);
+    let animate_key = use_state(|| 0u32);
     let container_ref = use_node_ref();
     let articles: UseStateHandle<Option<Vec<Article>>> = use_state(|| None);
     let fetch_error = use_state(|| false);
@@ -95,13 +94,23 @@ pub fn blog() -> Html {
 
     let on_toggle_view = {
         let show_all = show_all.clone();
-        Callback::from(move |_| show_all.set(!*show_all))
+        let animate_key = animate_key.clone();
+        Callback::from(move |_| {
+            show_all.set(!*show_all);
+            animate_key.set(*animate_key + 1);
+        })
+    };
+
+    let animate_class = if *is_visible {
+        format!("animate animate-key-{}", *animate_key)
+    } else {
+        String::new()
     };
 
     html! {
         <section
             ref={container_ref}
-            class={classes!("blog-layout", if *is_visible { "animate" } else { "" })}
+            class={classes!("blog-layout", animate_class)}
         >
             <div class="blog-content-inner">
                 <h2 id="blog" class="section-title-blog">{ "Blog" }</h2>
@@ -119,6 +128,7 @@ pub fn blog() -> Html {
                         };
                         let has_more = items.len() > INITIAL_DISPLAY;
                         let visible = items.into_iter().take(display_count).collect::<Vec<_>>();
+                        let key = *animate_key;
 
                         html! {
                             <>
@@ -127,6 +137,7 @@ pub fn blog() -> Html {
                                         let has_thumb = !article.thumbnail.is_empty();
                                         html! {
                                             <a
+                                                key={format!("{}-{}", article.url, key)}
                                                 href={article.url.clone()}
                                                 target="_blank"
                                                 rel="noopener noreferrer"

@@ -26,11 +26,11 @@ const PROFILE_DATA: &[ProfileEntry] = &[
     },
     ProfileEntry {
         label: "Title",
-        value: "Multi-hyphenate Unemployed.",
+        value: "Master of my own time.",
     },
     ProfileEntry {
         label: "Manifesto",
-        value: "Work less, live more.",
+        value: "The time you enjoy wasting is not wasted time.",
     },
     ProfileEntry {
         label: "Stack",

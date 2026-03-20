@@ -9,6 +9,7 @@ use yew::prelude::*;
 pub fn works() -> Html {
     let show_all = use_state(|| false);
     let is_visible = use_state(|| false);
+    let animate_key = use_state(|| 0u32);
     let container_ref = use_node_ref();
 
     let works_data = use_memo((), |_| get_works_data());
@@ -60,13 +61,23 @@ pub fn works() -> Html {
 
     let on_toggle_view = {
         let show_all = show_all.clone();
-        Callback::from(move |_| show_all.set(!*show_all))
+        let animate_key = animate_key.clone();
+        Callback::from(move |_| {
+            show_all.set(!*show_all);
+            animate_key.set(*animate_key + 1);
+        })
+    };
+
+    let animate_class = if *is_visible {
+        format!("animate animate-key-{}", *animate_key)
+    } else {
+        String::new()
     };
 
     html! {
         <main
             ref={container_ref}
-            class={classes!("works-layout", if *is_visible { "animate" } else { "" })}
+            class={classes!("works-layout", animate_class)}
         >
             <div class="works-content-inner">
                 <h2 id="works" class="section-title-works">{ "Works" }</h2>
@@ -74,7 +85,7 @@ pub fn works() -> Html {
                 <div class="works-grid">
                     { for visible_works.enumerate().map(|(i, work)| {
                         html! {
-                            <a key={work.id} href={work.url.clone()} class="work-card" style={format!("--i: {};", i)}>
+                            <a key={format!("{}-{}", work.id, *animate_key)} href={work.url.clone()} class="work-card" style={format!("--i: {};", i)}>
                                 <div class="work-thumbnail-container">
                                     if !work.img_path.is_empty() {
                                         <img src={work.img_path.clone()} alt={work.title.clone()} class="work-img" />
