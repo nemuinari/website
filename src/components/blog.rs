@@ -8,6 +8,7 @@ use web_sys::{Element, IntersectionObserver, IntersectionObserverEntry, Intersec
 use yew::prelude::*;
 
 const ARTICLES_JSON: &str = "assets/articles.json";
+const BLOG_ICON: &str = "assets/blog_icon.png";
 
 #[derive(Deserialize, Clone, PartialEq)]
 struct ArticlesJson {
@@ -142,7 +143,7 @@ pub fn blog() -> Html {
                                                 style={format!("--i: {};", i)}
                                             >
                                                 <div class="blog-thumbnail-container">
-                                                    <div class="blog-placeholder"></div>
+                                                    <img src={BLOG_ICON} alt="blog icon" class="blog-icon-img" />
                                                 </div>
                                                 <div class="blog-card-body">
                                                     <p class="blog-card-title">{ &article.title }</p>

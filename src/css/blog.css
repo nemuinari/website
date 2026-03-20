@@ -67,22 +67,16 @@
   justify-content: center;
 }
 
-.blog-img {
+.blog-icon-img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
   transition: transform 0.5s var(--ease-standard);
 }
 
-.blog-card:hover .blog-img {
+.blog-card:hover .blog-icon-img {
   transform: scale(1.06);
-}
-
-.blog-placeholder {
-  width: 100%;
-  height: 100%;
-  background-color: var(--color-placeholder);
 }
 
 /* --- Card Body --- */
@@ -210,12 +204,10 @@
     gap: 1.2rem;
   }
 
-  /* 通常表示(show_all=false)時は3件目を非表示にして2件表示 */
   .blog-grid .blog-card:nth-child(3) {
     display: none;
   }
 
-  /* View More展開時は全件表示 */
   .blog-grid.show-all .blog-card:nth-child(3) {
     display: flex;
   }
