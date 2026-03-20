@@ -15,15 +15,15 @@ const NAV_ITEMS: &[NavItem] = &[
     },
     NavItem {
         name: "Blog",
-        href: "#",
-    },
-    NavItem {
-        name: "Profile",
-        href: "#profile",
+        href: "#blog",
     },
     NavItem {
         name: "Works",
         href: "#works",
+    },
+    NavItem {
+        name: "Profile",
+        href: "#profile",
     },
     NavItem {
         name: "Contact",

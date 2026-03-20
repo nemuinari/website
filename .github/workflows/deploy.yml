@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+  schedule:
+    - cron: "0 0 * * *"
 
 permissions:
   contents: read
@@ -29,11 +31,14 @@ jobs:
           wget -qO- https://github.com/trunk-rs/trunk/releases/latest/download/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
           sudo mv trunk /usr/local/bin/
 
-      # ビルド実行（リポジトリ名 "website" に合わせたパス設定）
+      # CI-EN 記事一覧を取得して assets/articles.json を生成
+      - name: Fetch CI-EN articles
+        run: python3 scripts/fetch_cien_articles.py
+
+      # ビルド実行
       - name: Build with Trunk
         run: trunk build --release --public-url "/website/"
 
-      # Yew-router を使っている場合の 404 対策（必要なければ削除可）
       - name: Copy index.html to 404.html
         run: cp dist/index.html dist/404.html
 
