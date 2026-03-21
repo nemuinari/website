@@ -16,6 +16,8 @@ pub fn get_app_style() -> stylist::StyleSource {
         "\n",
         include_str!("works.css"),
         "\n",
+        include_str!("modal.css"),
+        "\n",
         include_str!("test.css"),
         "\n",
         include_str!("footer.css")
