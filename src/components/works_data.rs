@@ -27,7 +27,10 @@ pub fn get_works_data() -> Vec<WorkItem> {
             url: "https://github.com/nemuinari/rtm-rust-timer".to_string(),
             img_path: "assets/rtm-icon.png".to_string(),
             doc: Some(WorkDoc {
-                description: "Rust で開発した Windows 向けデスクトップタイマー。\nターミナルから $ rtm で起動可能。キーボード操作に対応しており、.exe から直接起動することもできます。",
+                description: "
+                Rust で開発した Windows 向けデスクトップタイマー
+                ターミナルから $ rtm で起動可能
+                キーボード操作に対応しており、.exe から直接起動することもできます",
                 features: &[
                     "[S] — タイマーの開始 / 停止 (START / STOP)",
                     "[R] — タイマーのリセット (RESET)",

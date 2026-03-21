@@ -217,7 +217,6 @@ pub fn works() -> Html {
         String::new()
     };
 
-    // selected_id → WorkItem を解決してモーダルを構築
     let modal_html = (*selected_id).and_then(|id| {
         works_data.iter().find(|w| w.id == id).and_then(|w| {
             w.doc.as_ref().map(|doc| {
