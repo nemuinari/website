@@ -49,7 +49,6 @@ pub fn header() -> Html {
     let is_visible = use_state(|| false);
     let hero_ref = use_node_ref();
 
-    // Intersection Observer for Hero Visual
     {
         let is_visible = is_visible.clone();
         let hero_ref = hero_ref.clone();
@@ -88,6 +87,11 @@ pub fn header() -> Html {
         Callback::from(move |_| is_menu_open.set(!*is_menu_open))
     };
 
+    let onclick_nav_link = {
+        let is_menu_open = is_menu_open.clone();
+        Callback::from(move |_| is_menu_open.set(false))
+    };
+
     html! {
         <header class="header-main">
             <div class="nav-bar">
@@ -95,16 +99,26 @@ pub fn header() -> Html {
                 <nav class="nav-container">
                     <button class="nav-toggle-btn" onclick={onclick_toggle}>{ "☰" }</button>
                     <ul class={classes!("nav-menu-list", if *is_menu_open { "active" } else { "" })}>
-                        { for NAV_ITEMS.iter().map(|item| html! {
-                            <li><a href={item.href} class="nav-link">{ item.name }</a></li>
+                        { for NAV_ITEMS.iter().map(|item| {
+                            let onclick_nav_link = onclick_nav_link.clone();
+                            html! {
+                                <li>
+                                    <a
+                                        href={item.href}
+                                        class="nav-link"
+                                        onclick={onclick_nav_link}
+                                    >
+                                        { item.name }
+                                    </a>
+                                </li>
+                            }
                         }) }
                     </ul>
                 </nav>
             </div>
-            <div ref={hero_ref} class={classes!("hero-visual-area", if *is_visible { "animate" } else { "" })}
-            >
-                <img src={HEADER_ITEMS.base} class="hero-layer hero-bg" alt="Main Background" />
-                <img src={HEADER_ITEMS.title} class="hero-layer hero-logo-title" alt="Title Logo" />
+            <div ref={hero_ref} class={classes!("hero-visual-area", if *is_visible { "animate" } else { "" })}>
+                <img src={HEADER_ITEMS.base}     class="hero-layer hero-bg"           alt="Main Background" />
+                <img src={HEADER_ITEMS.title}    class="hero-layer hero-logo-title"   alt="Title Logo" />
                 <img src={HEADER_ITEMS.subtitle} class="hero-layer hero-logo-subtitle" alt="Subtitle Logo" />
             </div>
         </header>
