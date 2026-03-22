@@ -28,7 +28,7 @@ pub fn get_works_data() -> Vec<WorkItem> {
             img_path: "assets/rtm-icon.png".to_string(),
             doc: Some(WorkDoc {
                 description: "
-                Rust で開発した Windows 向けデスクトップタイマー
+                Windows 向けデスクトップタイマー
                 ターミナルから $ rtm で起動可能
                 キーボード操作に対応しており、.exe から直接起動することもできます",
                 features: &[
