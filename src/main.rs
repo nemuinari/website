@@ -1,6 +1,7 @@
 mod components;
 mod css;
 
+use components::arts::Arts;
 use components::blog::Blog;
 use components::footer::Footer;
 use components::header::Header;
@@ -17,6 +18,7 @@ fn app() -> Html {
             <GlobalStyle />
             <Header />
             <Blog />
+            <Arts />
             <Works />
             <Profile />
             <Test />

@@ -18,6 +18,10 @@ const NAV_ITEMS: &[NavItem] = &[
         href: "#blog",
     },
     NavItem {
+        name: "Arts",
+        href: "#arts",
+    },
+    NavItem {
         name: "Works",
         href: "#works",
     },

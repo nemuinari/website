@@ -31,7 +31,8 @@
 │   ├── profile_1.png          # プロフィール背景画像
 │   ├── profile_2.png          # プロフィール前面画像
 │   ├── rtm-icon.png           # Works サムネイル
-│   └── articles.json          # CI-EN 記事一覧（CI で自動生成）
+│   ├── articles.json          # CI-EN 記事一覧（CI で自動生成）
+│   └── arts/                  # イラスト画像
 ├── scripts/
 │   └── fetch_cien_articles.py # CI-EN 記事取得スクリプト
 ├── src/
@@ -39,6 +40,7 @@
 │   ├── components/            # UI コンポーネント
 │   │   ├── mod.rs
 │   │   ├── header.rs          # ナビゲーション + ヒーロービジュアル
+│   │   ├── arts.rs            # イラスト一覧（モーダル表示付き）
 │   │   ├── blog.rs            # ブログ記事一覧（CI-EN 連携）
 │   │   ├── works.rs           # 制作物一覧
 │   │   ├── works_data.rs      # Works データ定義
@@ -51,6 +53,7 @@
 │       ├── base.css           # リセット・基本スタイル
 │       ├── header.css         # ヘッダー・ヒーロービジュアル
 │       ├── blog.css           # ブログセクション
+│       ├── arts.css           # Arts セクション
 │       ├── works.css          # Works セクション
 │       ├── profile.css        # プロフィールセクション
 │       ├── test.css           # 工事中表示
@@ -68,7 +71,7 @@
 
 ナビゲーションバーとヒーロービジュアルエリアを管理。
 
-- 固定ナビゲーションバー（ロゴ + リンク5件）
+- 固定ナビゲーションバー（ロゴ + リンク6件）
 - モバイル向けハンバーガーメニュー（`☰`）
 - `IntersectionObserver` でビューポート検出 → CSS アニメーション発火
 - ヒーロー画像は3レイヤー構成（背景 / タイトル / サブタイトル）で遅延 fade-in
@@ -81,6 +84,17 @@ CI-EN の記事一覧をビルド時に生成した `assets/articles.json` か�
 - 初期表示 3件、"View More" で全件展開（アニメーション付き再描画）
 - ローディング中はドットアニメーション、取得失敗時はエラーメッセージ表示
 - モバイルでは 2カラム表示・3件目を非表示に（Show All 時は全表示）
+
+### `Arts`
+
+イラスト画像をグリッド表示。画像データは `arts.rs` 内の定数で静的定義。
+
+- サムネイル用と拡大用で別画像を使用（モアレ対策）
+- 初期表示6件、"View More" で全件展開
+- 画像をクリック（タップ）するとモーダルで拡大表示
+- モーダルはオーバーレイクリックまたは Esc キーで閉じる
+- 画像は `max-width: 90vw / max-height: 90vh` に収まるようスケーリング
+- `IntersectionObserver` で初回スクロール到達時にアニメーション発火
 
 ### `Works`
 
@@ -110,8 +124,8 @@ CI-EN の記事一覧をビルド時に生成した `assets/articles.json` か�
 すべての CSS は `src/css/mod.rs` の `get_app_style()` で `concat!` + `include_str!` により1つの `StyleSource` に結合し、Stylist 経由でスコープ付きクラスとして注入する。
 
 ```
-variable.css → base.css → header.css → blog.css
-             → profile.css → works.css → test.css → footer.css
+variable.css → base.css → header.css → blog.css → arts.css
+             → profile.css → works.css → modal.css → test.css → footer.css
 ```
 
 ### CSS カスタムプロパティ（`variable.css`）

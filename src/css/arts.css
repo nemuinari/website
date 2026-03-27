@@ -1,0 +1,162 @@
+/* --- Arts Layout --- */
+.arts-layout {
+  padding: 2rem;
+  max-width: var(--max-width-content);
+  margin: 0 auto;
+  visibility: hidden;
+}
+
+.arts-layout.animate {
+  visibility: visible;
+}
+
+.section-title-arts {
+  color: var(--primary-text);
+  font-size: 2rem;
+  margin-bottom: 3rem;
+  text-align: left;
+  font-weight: 300;
+  opacity: 0;
+}
+
+.animate .section-title-arts {
+  animation: fadeInLefty 1.2s var(--ease-slide) forwards;
+}
+
+/* --- Grid --- */
+.arts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: clamp(1rem, 3vw, 3rem);
+  row-gap: 2.5rem;
+  margin-bottom: 2rem;
+  align-items: start;
+}
+
+/* --- Card --- */
+.art-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  opacity: 0;
+  border: 1px solid var(--border-color);
+  background: #fff;
+  transition:
+    transform 0.3s var(--ease-standard),
+    box-shadow 0.3s ease;
+}
+
+.animate .art-card {
+  animation: fadeInLefty 1.2s var(--ease-slide) forwards;
+  animation-delay: calc(0.3s + (var(--i) * 0.1s));
+}
+
+.art-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.09);
+}
+
+/* --- Thumbnail --- */
+.art-thumbnail-container {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.art-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s var(--ease-standard);
+}
+
+.art-card:hover .art-img {
+  transform: scale(1.06);
+}
+
+/* --- Modal --- */
+.art-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.art-modal-panel {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.art-modal-img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  display: block;
+}
+
+.art-modal-close-btn {
+  position: absolute;
+  top: -2.5rem;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.25rem 0.5rem;
+  transition: opacity 0.2s ease;
+}
+
+.art-modal-close-btn:hover {
+  opacity: 0.7;
+}
+
+/* --- Button --- */
+.arts-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.arts-more-button {
+  padding: 0.8rem 3rem;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--primary-text);
+  cursor: pointer;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  transition: all 0.2s ease;
+}
+
+.arts-more-button:hover {
+  background-color: var(--primary-text);
+  color: #fff;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .section-title-arts {
+    margin-bottom: 1.5rem;
+  }
+
+  .arts-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+}

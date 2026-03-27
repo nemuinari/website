@@ -12,6 +12,8 @@ pub fn get_app_style() -> stylist::StyleSource {
         "\n",
         include_str!("blog.css"),
         "\n",
+        include_str!("arts.css"),
+        "\n",
         include_str!("profile.css"),
         "\n",
         include_str!("works.css"),
