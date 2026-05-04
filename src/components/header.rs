@@ -22,10 +22,6 @@ const NAV_ITEMS: &[NavItem] = &[
         href: "#arts",
     },
     NavItem {
-        name: "Works",
-        href: "#works",
-    },
-    NavItem {
         name: "Profile",
         href: "#profile",
     },

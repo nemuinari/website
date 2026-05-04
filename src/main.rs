@@ -6,8 +6,6 @@ use components::blog::Blog;
 use components::footer::Footer;
 use components::header::Header;
 use components::profile::Profile;
-use components::test::Test;
-use components::works::Works;
 use css::GlobalStyle;
 use yew::prelude::*;
 
@@ -19,9 +17,7 @@ fn app() -> Html {
             <Header />
             <Blog />
             <Arts />
-            <Works />
             <Profile />
-            <Test />
             <Footer />
         </>
     }
